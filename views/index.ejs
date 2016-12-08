@@ -19,7 +19,7 @@
   <% } %>
   </ul>-->
 
-  <table id="quote" class="display" cellspacing="0" width="100%">
+  <!--<table id="quote" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Name</th>
@@ -34,7 +34,21 @@
             </tr>
          <% } %>
       </tbody>
-  </table>
+  </table>-->
+
+<div id='app'>
+  <table id="tblQuotes" class="display" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Quote</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+</div>
+  
 
   <form action="/quotes" method="POST">
     <input type="text" id="name" placeholder="name" name="name">
@@ -45,7 +59,9 @@
 <script>
   $(document).ready(function() {
       $('#quote').DataTable();
-      //getQuoteForDatatable();
+      $('#tblQuotes').DataTable();
+      //getQuoteForDatatable();tblQuotes
+      
   });
 
   function saveAndGetQuote() {
@@ -66,6 +82,15 @@
         // if(response) {
         //   getQuoteForDatatable();
         // }
+        var dTable = '';
+                     
+        $.each(response, function(index, element){
+          dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td></tr>';
+          
+        });
+        //dTable = '';
+        $('#tblQuotes').append(dTable);
+                      
       },
       error: function(err){
         console.log('err ' + err);
