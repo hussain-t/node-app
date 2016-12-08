@@ -62,3 +62,15 @@ app.post('/quotes', (req, res) => {
     res.redirect('/');
   });
 });
+
+app.post('/ajaxQuote', (req, res) => {
+    //var obj = {};
+    console.log('body: ' + JSON.stringify(req.body));
+    db.collection('ajaxQuote').save(req.body, (err, result) => {
+        if (err)
+            return console.log(err);
+        console.log('saved to database');
+        //res.send(req.body);
+    });
+    res.send(req.body);
+});

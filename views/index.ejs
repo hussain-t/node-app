@@ -37,14 +37,37 @@
   </table>
 
   <form action="/quotes" method="POST">
-    <input type="text" placeholder="name" name="name">
-    <input type="text" placeholder="quote" name="quote">
-    <button type="submit">Submit</button>
+    <input type="text" id="name" placeholder="name" name="name">
+    <input type="text" id="quote1" placeholder="quote" name="quote">
+    <button type="button" onClick="saveQuote()">Submit</button>
   </form>
 </body>
 <script>
   $(document).ready(function() {
       $('#quote').DataTable();
-  } );
+  });
+
+  function saveQuote() {
+    var data = {
+      name: $('#name').val(),
+      quote: $('#quote1').val()
+    };
+    
+    console.log(JSON.stringify(data));
+    $.ajax({
+      type: 'POST',
+      data: data,//JSON.stringify(data),
+      //dataType: 'json',
+      //contentType: 'application/json',
+      url: 'http://localhost:3001/ajaxQuote',
+      success: function(response) {
+        console.log('response ' + JSON.stringify(response));
+      },
+      error: function(err){
+        console.log('err ' + err);
+      }
+    });
+    //console.log(data);
+  }
 </script>
 </html>
