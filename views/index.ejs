@@ -39,15 +39,16 @@
   <form action="/quotes" method="POST">
     <input type="text" id="name" placeholder="name" name="name">
     <input type="text" id="quote1" placeholder="quote" name="quote">
-    <button type="button" onClick="saveQuote()">Submit</button>
+    <button type="button" onClick="saveAndGetQuote()">Save</button>
   </form>
 </body>
 <script>
   $(document).ready(function() {
       $('#quote').DataTable();
+      //getQuoteForDatatable();
   });
 
-  function saveQuote() {
+  function saveAndGetQuote() {
     var data = {
       name: $('#name').val(),
       quote: $('#quote1').val()
@@ -59,7 +60,24 @@
       data: data,//JSON.stringify(data),
       //dataType: 'json',
       //contentType: 'application/json',
-      url: 'http://localhost:3001/ajaxQuote',
+      url: 'http://localhost:3001/saveAndGetQuote',
+      success: function(response) {
+        console.log('response ' + JSON.stringify(response));
+        // if(response) {
+        //   getQuoteForDatatable();
+        // }
+      },
+      error: function(err){
+        console.log('err ' + err);
+      }
+    });
+    //console.log(data);
+  }
+
+  function getQuoteForDatatable() {
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost:3001/getQuoteForDatatable',
       success: function(response) {
         console.log('response ' + JSON.stringify(response));
       },
@@ -69,5 +87,6 @@
     });
     //console.log(data);
   }
+
 </script>
 </html>

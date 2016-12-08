@@ -45,12 +45,21 @@ app.get('/:quote', function (req, res) {
    });
 });
 
+//Redirect to home page
 app.get('/', (req, res) => {
   db.collection('quotes').find().toArray((err, result) => {
     if (err) return console.log(err);
     // renders index.ejs
     res.render('index.ejs', {quotes: result});
   });
+});
+
+//Ajax call method to Get Quote For Datatable(not using since getting from saveAndGetQuote method)
+app.get('/getQuoteForDatatable', (req, res) => {
+    db.collection('ajaxQuote').find().toArray((err, result) => {
+        console.log('RESULT: ' + JSON.stringify(result));
+        res.send(result);
+    });
 });
 
 app.post('/quotes', (req, res) => {
@@ -63,8 +72,9 @@ app.post('/quotes', (req, res) => {
   });
 });
 
-app.post('/ajaxQuote', (req, res) => {
-    //var obj = {};
+//Ajax call method to save and get data for datatable in mongodb
+app.post('/saveAndGetQuote', (req, res) => {
+
     console.log('body: ' + JSON.stringify(req.body));
     db.collection('ajaxQuote').save(req.body, (err, result) => {
         if (err)
@@ -72,5 +82,10 @@ app.post('/ajaxQuote', (req, res) => {
         console.log('saved to database');
         //res.send(req.body);
     });
-    res.send(req.body);
+    //res.send(req.body);
+
+    db.collection('ajaxQuote').find().toArray((err, result) => {
+        console.log('RESULT: ' + JSON.stringify(result));
+        res.send(result);
+    });
 });
