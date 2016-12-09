@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
 });
 
 //Ajax call method to Get Quote For Datatable(not using since getting from saveAndGetQuote method)
-app.get('/getQuoteForDatatable', (req, res) => {
+app.post('/getQuoteForDatatable', (req, res) => {
     db.collection('ajaxQuote').find().toArray((err, result) => {
         console.log('RESULT: ' + JSON.stringify(result));
         res.send(result);

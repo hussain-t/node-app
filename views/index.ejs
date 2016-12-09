@@ -60,7 +60,7 @@
   $(document).ready(function() {
       $('#quote').DataTable();
       $('#tblQuotes').DataTable();
-      //getQuoteForDatatable();tblQuotes
+      getQuoteForDatatable();
       
   });
 
@@ -101,7 +101,8 @@
 
   function getQuoteForDatatable() {
     $.ajax({
-      type: 'GET',
+      type: 'POST',
+      //data: "",
       url: 'http://localhost:3001/getQuoteForDatatable',
       success: function(response) {
         console.log('response ' + JSON.stringify(response));
