@@ -4,20 +4,13 @@
   <meta charset="UTF-8">
   <title>MY APP</title>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>   
 </head>
 <body>
   May Node and Express be with you.
-
-  <!--<ul class="quotes">
-  <% for(var i=0; i<quotes.length; i++) {%>
-    <li class="quote">
-      <span>Name: <%= quotes[i].name %></span>&nbsp;&nbsp;
-      <span>Quote: <%= quotes[i].quote %></span>
-    </li>
-  <% } %>
-  </ul>-->
 
   <!--<table id="quote" class="display" cellspacing="0" width="100%">
         <thead>
@@ -36,14 +29,8 @@
       </tbody>
   </table>-->
 
-<div id='app'>
+<div id='app'></div>
   
-    
-    
-   
-</div>
-  
-
   <form action="/quotes" method="POST">
     <input type="text" id="name" placeholder="name" name="name">
     <input type="text" id="quote1" placeholder="quote" name="quote">
@@ -56,62 +43,68 @@
       getQuoteForDatatable();
   });
 
-  function saveAndGetQuote() {
-    var data = {
-      name: $('#name').val(),
-      quote: $('#quote1').val()
-    };
-    
-    console.log(JSON.stringify(data));
-    $.ajax({
-      type: 'POST',
-      data: data,
-      //dataType: 'json',
-      //contentType: 'application/json',
-      url: 'http://localhost:3001/saveAndGetQuote',
-      success: function(response) {
-        console.log('response ' + JSON.stringify(response));
-        var dTable = '<table id="tblQuotes" class="display" cellspacing="0" width="100%">';
-            dTable += '<thead><tr><th>Name</th><th>Quote</th></tr></thead><tbody>';
-                     
-        $.each(response, function(index, element){
-          dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td></tr>';         
-        });
-        dTable += '</tbody></table>';
-        
-        $('#app').html(dTable);
-        $('#tblQuotes').DataTable();   
-      },
-      error: function(err){
-        console.log('err ' + err);
-      }
-    });
-  }
+  var edit = '<button id="btnEdit">Edit</button>';
+  var deleteBtn = '<button id="btnDelete">Delete</button>';
 
   function getQuoteForDatatable() {
-    $.ajax({
-      type: 'POST',
-      //data: "",
-      url: 'http://localhost:3001/getQuoteForDatatable',
-      success: function(response) {
-        console.log('response ' + JSON.stringify(response));
-        var dTable = '<table id="tblQuotes" class="display" cellspacing="0" width="100%">';
-            dTable += '<thead><tr><th>Name</th><th>Quote</th></tr></thead><tbody>';
-                     
-        $.each(response, function(index, element){
-          dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td></tr>';         
-        });
-        dTable += '</tbody></table>';
-        
-        $('#app').append(dTable);
-        $('#tblQuotes').DataTable();
-      },
-      error: function(err){
-        console.log('err ' + err);
-      }
-    });
-    //console.log(data);
+      $.ajax({
+          type: 'POST',
+          //data: "",
+          url: 'http://localhost:3001/getQuoteForDatatable',
+          success: function(response) {
+              console.log('response ' + JSON.stringify(response));
+              var dTable = '<table id="tblQuotes" class="display responsive nowrap" cellspacing="0" width="100%">';
+                  dTable += '<thead><tr><th>Name</th><th>Quote</th><th>Actions</th></tr></thead><tbody>';
+                              
+              $.each(response, function(index, element){
+                  dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td><td>' + edit + ' ' + deleteBtn + '</td></tr>';
+              });
+              dTable += '</tbody></table>';
+              
+              $('#app').append(dTable);
+              $('#tblQuotes').DataTable();
+          },
+          error: function(err){
+              console.log('err ' + err);
+          }
+      });
+      //console.log(data);
   }
+
+  function saveAndGetQuote() {
+  var data = {
+      name: $('#name').val(),
+      quote: $('#quote1').val()
+  };
+
+  console.log(JSON.stringify(data));
+      $.ajax({
+          type: 'POST',
+          data: data,
+          //dataType: 'json',
+          //contentType: 'application/json',
+          url: 'http://localhost:3001/saveAndGetQuote',
+          success: function(response) {
+              console.log('response ' + JSON.stringify(response));
+              var dTable = '<table id="tblQuotes" class="display responsive nowrap" cellspacing="0" width="100%">';
+                  dTable += '<thead><tr><th>Name</th><th>Quote</th><th>Actions</th></tr></thead><tbody>';
+                              
+              $.each(response, function(index, element){
+                  dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td>' +
+                  '<td>' + edit + ' ' + deleteBtn + '</td></tr>';         
+              });
+              dTable += '</tbody></table>';
+              
+              $('#app').html(dTable);
+              $('#tblQuotes').DataTable();   
+          },
+          error: function(err){
+              console.log('err ' + err);
+          }
+      });
+  }
+
+  
 
 </script>
 </html>
