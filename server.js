@@ -118,3 +118,11 @@ app.put('/updateQuote', (req, res) => {
         res.send(result);
     });
 });
+
+//Fetch one record for edit
+app.post('/getDataById', (req, res) => {
+    db.collection('ajaxQuote').findOne({_id: ObjectId(req.body._id)}, (err, result) => {
+        console.log('result: ' + JSON.stringify(result));
+        res.send(result);
+    });
+});

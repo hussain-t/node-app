@@ -18,7 +18,7 @@ $(document).ready(function() {
                               
               $.each(response, function(index, element){
                   dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td>' + 
-                            '<td><button id="btnEdit_' + element._id + '" onClick=updateQuote("' + element._id + '")>Edit</button>&nbsp;' +
+                            '<td><button id="btnEdit_' + element._id + '" onClick=editQuote("' + element._id + '")>Edit</button>&nbsp;' +
                             '<button id="btnDelete_' + element._id + '" onClick=deleteQuote("' + element._id + '")>Delete</button></td></tr>';
               });
               dTable += '</tbody></table>';
@@ -58,7 +58,7 @@ $(document).ready(function() {
                                 
                 $.each(response, function(index, element){
                     dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td>' +
-                                '<td><button id="btnEdit_' + element._id + '" onClick=updateQuote("' + element._id + '")>Edit</button>&nbsp;' +
+                                '<td><button id="btnEdit_' + element._id + '" onClick=editQuote("' + element._id + '")>Edit</button>&nbsp;' +
                                 '<button id="btnDelete_' + element._id + '" onClick=deleteQuote("' + element._id + '")>Delete</button></td></tr>';        
                 });
                 dTable += '</tbody></table>';
@@ -82,6 +82,23 @@ $(document).ready(function() {
         data: {'_id': id },        
         success: function(data) {
             getQuoteForDatatable(true);
+        },
+        error: function(err){
+            console.log('err ' + err);
+        }       
+    });
+  }
+
+  function editQuote(id) {
+      $.ajax({
+        type: 'POST',
+        url: 'getDataById',
+        data: {'_id': id },        
+        success: function(data) {
+            //getQuoteForDatatable(true);
+            console.log(JSON.stringify(data));
+            document.getElementById('name').value = data.name;
+            document.getElementById('quote1').value = data.quote;
         },
         error: function(err){
             console.log('err ' + err);
