@@ -18,7 +18,7 @@ $(document).ready(function() {
                               
               $.each(response, function(index, element){
                   dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td>' + 
-                            '<td><button id="btnEdit_' + element._id + '">Edit</button>&nbsp;' +
+                            '<td><button id="btnEdit_' + element._id + '" onClick=updateQuote("' + element._id + '")>Edit</button>&nbsp;' +
                             '<button id="btnDelete_' + element._id + '" onClick=deleteQuote("' + element._id + '")>Delete</button></td></tr>';
               });
               dTable += '</tbody></table>';
@@ -58,7 +58,7 @@ $(document).ready(function() {
                                 
                 $.each(response, function(index, element){
                     dTable += '<tr><td>' + element.name + '</td><td>' + element.quote + '</td>' +
-                                '<td><button id="btnEdit_' + element._id + '">Edit</button>&nbsp;' +
+                                '<td><button id="btnEdit_' + element._id + '" onClick=updateQuote("' + element._id + '")>Edit</button>&nbsp;' +
                                 '<button id="btnDelete_' + element._id + '" onClick=deleteQuote("' + element._id + '")>Delete</button></td></tr>';        
                 });
                 dTable += '</tbody></table>';
@@ -87,4 +87,21 @@ $(document).ready(function() {
             console.log('err ' + err);
         }       
     });
+  }
+
+  function updateQuote(id) {
+      fetch('updateQuote', {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            '_id': id,
+            'name': "Abdullaah",
+            'quote': "My sample quote from Abdullaah"
+        })
+      }).then(res => {
+          if (res.ok) return res.json()
+      }).then(data => {
+          console.log(data);
+          getQuoteForDatatable(true);
+      });
   }
