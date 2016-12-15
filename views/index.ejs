@@ -35,7 +35,9 @@
   <form action="/quotes" method="POST">
     <input type="text" id="name" placeholder="name" name="name">
     <input type="text" id="quote1" placeholder="quote" name="quote">
-    <button type="button" onClick="saveAndGetQuote()">Save</button>
+    <input type="hidden" id="hdnObjId" value="">
+    <button type="button" id="btnSave" onClick="saveAndGetQuote()">Save</button>
+    <button type="button" id="btnUpdate" onClick="updateQuote()" style="display: none">Update</button>
   </form>
 </body>
 

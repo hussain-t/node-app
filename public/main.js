@@ -90,6 +90,7 @@ $(document).ready(function() {
   }
 
   function editQuote(id) {
+      
       $.ajax({
         type: 'POST',
         url: 'getDataById',
@@ -97,8 +98,12 @@ $(document).ready(function() {
         success: function(data) {
             //getQuoteForDatatable(true);
             console.log(JSON.stringify(data));
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
             document.getElementById('name').value = data.name;
             document.getElementById('quote1').value = data.quote;
+            document.getElementById('hdnObjId').value = data._id;
+            //console.log(document.getElementById('hdnObjId').value);
         },
         error: function(err){
             console.log('err ' + err);
@@ -106,19 +111,26 @@ $(document).ready(function() {
     });
   }
 
-  function updateQuote(id) {
-      fetch('updateQuote', {
+  function updateQuote() {
+    var data = {
+        _id: $('#hdnObjId').val(),
+        name: $('#name').val(),
+        quote: $('#quote1').val()
+    };
+
+    fetch('updateQuote', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            '_id': id,
-            'name': "Abdullaah",
-            'quote': "My sample quote from Abdullaah"
-        })
-      }).then(res => {
-          if (res.ok) return res.json()
-      }).then(data => {
-          console.log(data);
-          getQuoteForDatatable(true);
-      });
+        body: JSON.stringify(data)
+        }).then(res => {
+            if (res.ok) return res.json()
+        }).then(data => {
+            console.log(data);
+            getQuoteForDatatable(true);
+
+            document.getElementById('name').value = "";
+            document.getElementById('quote1').value = "";
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+    });
   }
