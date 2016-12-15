@@ -106,7 +106,10 @@
                 dTable += '</tbody></table>';
                 
                 $('#app').html(dTable);
-                $('#tblQuotes').DataTable();   
+                $('#tblQuotes').DataTable();
+                
+                document.getElementById('name').value = "";
+                document.getElementById('quote1').value = "";
             },
             error: function(err){
                 console.log('err ' + err);
