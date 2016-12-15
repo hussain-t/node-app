@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 
 var db;
 
@@ -87,5 +88,14 @@ app.post('/saveAndGetQuote', (req, res) => {
     db.collection('ajaxQuote').find().toArray((err, result) => {
         console.log('RESULT: ' + JSON.stringify(result));
         res.send(result);
+    });
+});
+
+//Delete Quote
+app.delete('/deleteQuote', (req, res) => {
+    db.collection('ajaxQuote').deleteOne({_id: ObjectId(req.body._id)},
+    (err, result) => {
+        if (err) return res.send(500, err);
+        res.send('deleted');        
     });
 });
