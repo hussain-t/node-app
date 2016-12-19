@@ -8,7 +8,9 @@ var ObjectId = require('mongodb').ObjectID;
 var db;
 
 app.use(express.static('public'));
+
 app.use(bodyParser.json());
+
 
 //mongodb://root:root123@ds115918.mlab.com:15918/node-crud-app
 MongoClient.connect('mongodb://root:root123@localhost:27017/node-app', (err, database) => {
