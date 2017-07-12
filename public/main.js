@@ -1,7 +1,20 @@
 $(document).ready(function() {
+        var text = "Hussain's API";
       //$('#quote').DataTable();     
       getQuoteForDatatable();
+      callAspWebAPI(text);
   });
+
+  function callAspWebAPI(text) {
+      $.ajax({
+        type: 'GET',
+        data: { "text": text },
+        url: 'http://localhost:64209/api/APISample/CallMeToAlert',
+        success: function(response) {
+            alert(response);
+        }
+      });
+  }
 
   var edit = '<button id="btnEdit">Edit</button>';
   var deleteBtn = '<button id="btnDelete">Delete</button>';
@@ -12,7 +25,7 @@ $(document).ready(function() {
           //data: "",
           url: 'http://localhost:3001/getQuoteForDatatable',
           success: function(response) {
-              console.log('response ' + JSON.stringify(response));
+              console.log(response);
               var dTable = '<table id="tblQuotes" class="display responsive nowrap" cellspacing="0" width="100%">';
                   dTable += '<thead><tr><th>Name</th><th>Quote</th><th>Actions</th></tr></thead><tbody>';
                               
@@ -39,10 +52,18 @@ $(document).ready(function() {
   }
 
   function saveAndGetQuote() {
-    var data = {
-        name: $('#name').val(),
-        quote: $('#quote1').val()
-    };
+    var name =  $('#name').val();
+    var quote = $('#quote1').val();
+    var data = {};
+    if(name === "" || name === null || quote === "" || quote === null) {
+        alert('Please enter a vvalue');
+        return false;
+    } else {
+        data = {
+            name: name,
+            quote: quote
+        };
+    }
 
     console.log(JSON.stringify(data));
         $.ajax({

@@ -9,6 +9,7 @@
   <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
   <script src="main.js"></script>
+  
 </head>
 <body>
   May Node and Express be with you.
@@ -31,6 +32,7 @@
   </table>-->
 
 <div id='app'></div>
+<div id='root'></div>
   
   <form action="/quotes" method="POST">
     <input type="text" id="name" placeholder="name" name="name">
@@ -39,5 +41,7 @@
     <button type="button" id="btnSave" onClick="saveAndGetQuote()">Save</button>
     <button type="button" id="btnUpdate" onClick="updateQuote()" style="display: none">Update</button>
   </form>
+
+  <script src="bundle.js"></script>
 </body>
 </html>

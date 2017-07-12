@@ -7,6 +7,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 var db;
 
+//app.use(express.static('public'));
 app.use(express.static('public'));
 
 app.use(bodyParser.json());
@@ -82,18 +83,59 @@ app.post('/quotes', (req, res) => {
 app.post('/saveAndGetQuote', (req, res) => {
 
     console.log('body: ' + JSON.stringify(req.body));
-    db.collection('ajaxQuote').save(req.body, (err, result) => {
-        if (err)
-            return console.log(err);
-        console.log('saved to database');
-        //res.send(req.body);
-    });
-    //res.send(req.body);
 
-    db.collection('ajaxQuote').find().toArray((err, result) => {
-        console.log('RESULT: ' + JSON.stringify(result));
-        res.send(result);
+    // db.collection('ajaxQuote').find({ 'name': '11'}).toArray(function(e, r) 
+    // { 
+    //     console.log(e); 
+    //     console.log(r); 
+    // });
+
+    // db.collection('ajaxQuote').find({ 'name': '444444ddddddd'}).toArray(function(e, r) 
+    // { 
+    //     console.log(e); 
+    //     console.log(r); 
+    // });
+        
+    //method 1
+    db.collection('ajaxQuote').findOne({ 'name': req.body.name }, (err, exits) => {
+        if (!exits) {
+            db.collection('ajaxQuote').save(req.body, (err, result) => {
+                if (err)
+                    return console.log(err);
+                console.log('saved to database');
+                //res.send(req.body);
+            });
+            //res.send(req.body)
+            db.collection('ajaxQuote').find().toArray((err, result) => {
+                console.log('RESULT: ' + JSON.stringify(result));
+                res.send(result);
+            });
+        } else {
+            console.log('already exits');
+        }
     });
+
+    //method 2
+    //var cursor = db.collection('ajaxQuote').find({'name': req.body.name});
+
+    // db.collection('ajaxQuote').find({'name': req.body.name}).toArray(function(e, b) {
+    //     if (b === null) {
+    //         db.collection('ajaxQuote').save(req.body, (err, result) => {
+    //             if (err)
+    //                 return console.log(err);
+    //             console.log('saved to database');
+    //             //res.send(req.body);
+    //         });
+    //         //res.send(req.body)
+    //         db.collection('ajaxQuote').find().toArray((err, result) => {
+    //             console.log('RESULT: ' + JSON.stringify(result));
+    //             res.send(result);
+    //         });
+    //     }
+    //     else {
+    //         console.log('name already exits');
+    //     }
+    // });
 });
 
 //Delete Quote
